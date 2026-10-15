@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f1f1d">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>My Note</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#e6eee9;--ink:#183532;--mute:#5b7370;--card:#f6faf7;--key:#fdfefd;--hit:#d6336c;--line:#b9cbc5;--safe:0px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1f1d;--ink:#e3f0ec;--mute:#8fa9a4;--card:#172b28;--key:#dfe9e5;--hit:#ff6b9a;--line:#2b4642}}
+:root[data-theme="dark"]{--bg:#0f1f1d;--ink:#e3f0ec;--mute:#8fa9a4;--card:#172b28;--key:#dfe9e5;--hit:#ff6b9a;--line:#2b4642}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.45}
+main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.9rem;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+p.sub{margin:0 0 18px;color:var(--mute)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.btn{background:var(--hit);color:#fff;border:0;border-radius:10px;padding:11px 16px;font:600 1rem inherit;font-family:inherit;cursor:pointer}
+.btn:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+input[type=file]{max-width:100%;color:var(--mute);font-family:inherit;font-size:.95rem}input[type=file]::file-selector-button{background:var(--hit);color:#fff;border:0;border-radius:10px;padding:11px 16px;margin-right:10px;font-family:inherit;font-weight:600;font-size:1rem;cursor:pointer}
+select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:inherit;font-size:1rem}
+#status{color:var(--mute);min-height:1.4em;margin:0 0 10px}
+#now{font-size:4.2rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin:6px 0 10px;min-height:1.4em;color:var(--hl,var(--hit))}
+#wrap{overflow-x:auto;background:#1b1412;border-radius:12px;border-top:10px solid #3a2a22;padding:12px 8px 8px;scroll-behavior:smooth;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+#kb{position:relative;height:190px}#kb::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:#7a1f2b;z-index:3}
+.w,.b{position:absolute;top:0;border-radius:0 0 5px 5px}
+.w{height:100%;background:linear-gradient(#dfe6e3,#fff 16%,#f2f5f3);border:1px solid #9aa9a4;border-top:0;font-size:.62rem;color:#5b7370;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;box-shadow:inset 0 -9px 0 #dde5e1;transition:transform .06s}.w[data-c]::before{content:attr(data-c)}
+.b{height:62%;background:linear-gradient(#3b3b3b,#121212 70%,#000);box-shadow:inset 1px 0 0 #555,inset -1px 0 0 #222,0 4px 5px rgba(0,0,0,.5);z-index:2;transition:transform .06s}
+.on{background:var(--hl,var(--hit))!important;color:var(--onhl,#fff)}.on::before{content:none!important}.on::after{content:attr(data-n);position:absolute;bottom:6px;left:-4px;right:-4px;text-align:center;font-size:.6rem;font-weight:800;color:var(--onhl,#fff)}.w.on{transform:translateY(2px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}.b.on{transform:translateY(1px)}.on{animation:press .24s ease-out}@keyframes press{0%{filter:brightness(.5);transform:translateY(5px)}100%{filter:none}}.on[data-p]::before{content:attr(data-p)!important;position:absolute;top:16px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:#fff;color:#111;font-size:.75rem;font-weight:800;display:grid;place-items:center;z-index:4}.b.on[data-p]::before{top:8px;width:18px;height:18px;font-size:.65rem}@media (prefers-reduced-motion:reduce){.on{animation:none}}
+.nx{box-shadow:inset 0 -8px 0 var(--hl,var(--hit))}
+h2{font-size:1.05rem;margin:20px 0 8px}.sw{display:inline-flex;gap:8px}.sw button{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}.sw button[aria-pressed=true]{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}#col{width:42px;height:34px;border:0;background:none;padding:0}
+#next{display:flex;gap:8px;flex-wrap:wrap;min-height:2.2em}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-weight:600}
+.grp{display:inline-flex;align-items:center;gap:10px;margin-right:8px}.rep{color:var(--mute);font-size:.9rem}#now small{display:block;font-size:.26em;color:var(--mute);font-weight:600;letter-spacing:0;margin-top:8px}
+audio{width:100%;margin-top:14px}
+details{margin-top:18px}summary{cursor:pointer;font-weight:600}
+#list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+#list button{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-family:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+<h1>My Note</h1>
+<p class="sub" data-i="sub"></p>
+<div class="row">
+<input type="file" id="file" accept="audio/*,.mp3,.m4a,.wav,.aac,.ogg,.flac" aria-label="Choisir une chanson"><button class="btn" id="mic" type="button"></button><div id="capw" hidden style="width:100%"><p class="sub" data-i="cap" style="margin:6px 0"></p><input type="file" id="cap" accept="audio/*" capture></div>
+</div><details><summary data-i="set"></summary><div class="row" style="margin-top:10px"><select id="lang" aria-label="Language"><option value="fr">Français</option><option value="en">English</option><option value="de">Deutsch</option><option value="es">Español</option></select><select id="not" aria-label="Notes"><option value="0"></option><option value="1"></option></select><select id="spd" aria-label="Speed"><option value="0.5"></option><option value="0.75"></option><option value="1" selected></option></select><select id="size" aria-label="Keyboard">
+<option value="49">Clavier 49 touches</option>
+<option value="61" selected>Clavier 61 touches</option>
+<option value="76">Clavier 76 touches</option>
+<option value="88">Piano 88 touches</option>
+</select></div></details>
+<p id="status"></p><p id="tip" class="sub" style="margin:-4px 0 10px;font-size:.92rem"></p>
+<div id="now" aria-live="polite"></div>
+<div id="wrap"><div id="kb"></div></div>
+<div class="row" style="margin-top:12px"><span style="color:var(--mute)" data-i="col"></span><span id="sw" class="sw"></span><input type="color" id="col" aria-label="Couleur personnalisée"></div>
+<h2 data-i="next"></h2>
+<div id="next"></div>
+<audio id="au" controls></audio>
+<details><summary data-i="all"></summary><div id="list"></div></details>
+<p class="sub" style="margin-top:22px;font-size:.9rem" data-i="foot"></p>
+</main>
+<script>
+const SOL={fr:['Do','Do#','Ré','Ré#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'],es:['Do','Do#','Re','Re#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si']};
+const LET=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+let lang='fr',nsys=0;
+const nn=i=>nsys?(lang==='de'&&i===10?'B':lang==='de'&&i===11?'H':LET[i]):(SOL[lang]||SOL.fr)[i];
+const RANGE={49:[36,84],61:[36,96],76:[28,103],88:[21,108]};
+const $=id=>document.getElementById(id);
+const nm=m=>nn(m%12)+(Math.floor(m/12)-1);
+const blk=m=>[1,3,6,8,10].includes(m%12);
+const T={
+fr:{sub:`Choisis une chanson, puis appuie sur lecture : les touches s'allument au bon moment.`,s0:`Aucune chanson choisie. Sélectionne un fichier audio de ton téléphone.`,set:`Réglages`,col:`Couleur des touches`,next:`Prochaines notes`,all:`Toutes les notes détectées`,foot:`Ce prototype détecte la mélodie principale (une note à la fois) sur toute la chanson. Il marche mieux avec une voix ou un instrument seul qu'avec un morceau très chargé.`,keys:`touches`,nots:[`Do Ré Mi`,`C D E`],read:`Lecture du fichier…`,ana:`Analyse de la mélodie…`,err:`Ce fichier n'a pas pu être lu. Essaie un MP3, WAV ou M4A.`,none:`Aucune mélodie claire détectée. Essaie une chanson avec une voix ou un instrument bien net.`,done:`notes détectées. Appuie sur lecture et joue en suivant les touches.`,times:`fois`,same:`Même note`,of:`sur`,range:`Mélodie de`,out:`{n} notes sortent de ton clavier : elles sont décalées d'une octave. Un clavier de {k} touches ou plus est conseillé.`,okr:`Ton clavier couvre bien cette plage.`,spd:`Vitesse`,mic:`🎤 Écouter une chanson`,stop:`⏹ Arrêter l'écoute`,rec:`J'écoute… Fais jouer la chanson près du micro, puis appuie sur Arrêter (60 s maximum).`,micerr:`Le micro est bloqué dans cette page. Enregistre avec ton téléphone grâce au bouton ci-dessous.`,cap:`Si le micro ne marche pas ici, enregistre avec le téléphone, puis valide l'enregistrement :`},
+en:{sub:`Pick a song, then press play: the keys light up at the right time.`,s0:`No song chosen. Select an audio file from your phone.`,set:`Settings`,col:`Key color`,next:`Next notes`,all:`All detected notes`,foot:`This prototype follows the main melody (one note at a time) across the whole song. It works best with a voice or a single instrument rather than a busy mix.`,keys:`keys`,nots:[`Do Re Mi`,`C D E`],read:`Reading the file…`,ana:`Analyzing the melody…`,err:`This file could not be read. Try an MP3, WAV or M4A.`,none:`No clear melody detected. Try a song with a clear voice or instrument.`,done:`notes detected. Press play and follow the keys.`,times:`times`,same:`Same note`,of:`of`,range:`Melody from`,out:`{n} notes fall outside your keyboard and are shifted by an octave. A keyboard of {k} keys or more is recommended.`,okr:`Your keyboard covers this range well.`,spd:`Speed`,mic:`🎤 Listen to a song`,stop:`⏹ Stop listening`,rec:`Listening… Play the song near the microphone, then tap Stop (60 s max).`,micerr:`Microphone is blocked in this page. Record with your phone using the button below.`,cap:`If the microphone doesn't work here, record with your phone, then confirm the recording:`},
+de:{sub:`Wähle ein Lied und drücke auf Wiedergabe: Die Tasten leuchten im richtigen Moment auf.`,s0:`Kein Lied ausgewählt. Wähle eine Audiodatei von deinem Handy.`,set:`Einstellungen`,col:`Tastenfarbe`,next:`Nächste Noten`,all:`Alle erkannten Noten`,foot:`Dieser Prototyp erkennt die Hauptmelodie (jeweils eine Note) im ganzen Lied. Er funktioniert am besten mit einer Stimme oder einem einzelnen Instrument, weniger bei dichten Mixen.`,keys:`Tasten`,nots:[`Do Re Mi`,`C D E`],read:`Datei wird gelesen…`,ana:`Melodie wird analysiert…`,err:`Diese Datei konnte nicht gelesen werden. Versuche MP3, WAV oder M4A.`,none:`Keine klare Melodie erkannt. Versuche ein Lied mit klarer Stimme oder klarem Instrument.`,done:`Noten erkannt. Drücke auf Wiedergabe und folge den Tasten.`,times:`Mal`,same:`Gleiche Note`,of:`von`,range:`Melodie von`,out:`{n} Noten liegen außerhalb deiner Tastatur und werden um eine Oktave verschoben. Empfohlen: {k} Tasten oder mehr.`,okr:`Deine Tastatur deckt diesen Bereich gut ab.`,spd:`Tempo`,mic:`🎤 Lied anhören`,stop:`⏹ Aufnahme stoppen`,rec:`Ich höre zu… Spiele das Lied nahe am Mikrofon ab und tippe dann auf Stopp (max. 60 s).`,micerr:`Das Mikrofon ist auf dieser Seite blockiert. Nimm mit deinem Handy über die Schaltfläche unten auf.`,cap:`Wenn das Mikrofon hier nicht funktioniert, nimm mit dem Handy auf und bestätige die Aufnahme:`},
+es:{sub:`Elige una canción y pulsa reproducir: las teclas se iluminan en el momento justo.`,s0:`Ninguna canción elegida. Selecciona un archivo de audio de tu teléfono.`,set:`Ajustes`,col:`Color de las teclas`,next:`Próximas notas`,all:`Todas las notas detectadas`,foot:`Este prototipo sigue la melodía principal (una nota a la vez) en toda la canción. Funciona mejor con una voz o un instrumento solo que con una mezcla muy cargada.`,keys:`teclas`,nots:[`Do Re Mi`,`C D E`],read:`Leyendo el archivo…`,ana:`Analizando la melodía…`,err:`No se pudo leer este archivo. Prueba con MP3, WAV o M4A.`,none:`No se detectó una melodía clara. Prueba con una canción con voz o instrumento nítido.`,done:`notas detectadas. Pulsa reproducir y sigue las teclas.`,times:`veces`,same:`Misma nota`,of:`de`,range:`Melodía de`,out:`{n} notas quedan fuera de tu teclado y se desplazan una octava. Se recomienda un teclado de {k} teclas o más.`,okr:`Tu teclado cubre bien este rango.`,spd:`Velocidad`,mic:`🎤 Escuchar una canción`,stop:`⏹ Detener escucha`,rec:`Escuchando… Reproduce la canción cerca del micrófono y pulsa Detener (máx. 60 s).`,micerr:`El micrófono está bloqueado en esta página. Graba con tu teléfono usando el botón de abajo.`,cap:`Si el micrófono no funciona aquí, graba con tu teléfono y confirma la grabación:`}};
+const t=k=>(T[lang]||T.fr)[k];
+function tip(){
+  if(!notes.length)return;
+  const ms=notes.map(n=>n.m).sort((p,q)=>p-q),a=ms[Math.floor(ms.length*.05)],b=ms[Math.floor(ms.length*.95)];
+  const out=notes.filter(n=>n.m<lo||n.m>hi).length;
+  const need=[49,61,76,88].find(s=>RANGE[s][0]<=a&&RANGE[s][1]>=b)||88;
+  $('tip').textContent=t('range')+' '+nm(a)+' – '+nm(b)+'. '+(out?t('out').replace('{n}',out).replace('{k}',need):t('okr'));
+}
+function applyLang(reset){
+  document.documentElement.lang=lang;
+  if(reset)nsys=(lang==='en'||lang==='de')?1:0;
+  $('not').value=nsys;
+  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
+  [...$('not').options].forEach((o,i)=>o.textContent=t('nots')[i]);
+  [...$('size').options].forEach(o=>o.textContent=o.value+' '+t('keys'));
+  [...$('spd').options].forEach(o=>o.textContent=t('spd')+' '+o.value+'×');
+  setMic();
+  if(!$('au').getAttribute('src'))$('status').textContent=t('s0');
+  last=null;lastNx=[];lastI=-2;
+  build();
+  [...$('list').children].forEach((b,i)=>{if(notes[i])b.textContent=nm(fit(notes[i].m))});
+}
+let notes=[],keys={},lo=36,hi=96,cur=-1;
+const fit=m=>{while(m<lo)m+=12;while(m>hi)m-=12;return m};
+
+function build(){
+  [lo,hi]=RANGE[$('size').value];if(notes.length){mkGroups();tip()}
+  const kb=$('kb');kb.innerHTML='';keys={};
+  let wn=0;for(let m=lo;m<=hi;m++)if(!blk(m))wn++;
+  const w=100/wn;kb.style.minWidth=wn*26+'px';
+  let wi=0;
+  for(let m=lo;m<=hi;m++){
+    const e=document.createElement('div');
+    if(blk(m)){e.className='b';e.style.left=(wi*w-w*.3)+'%';e.style.width=(w*.6)+'%'}
+    else{e.className='w';e.style.left=(wi*w)+'%';e.style.width=w+'%';if(m%12===0)e.dataset.c=nm(m);wi++}
+    e.dataset.n=nn(m%12);keys[m]=e;kb.appendChild(e);
+  }
+  cur=-1;
+}
+
+function yinFrames(x,sr,onProg){
+  const W=512,hop=256,maxT=Math.floor(sr/65),minT=Math.floor(sr/1100);
+  const total=Math.floor((x.length-W-maxT)/hop),out=new Int16Array(Math.max(total,0));
+  const d=new Float32Array(maxT+1),c=new Float32Array(maxT+1);
+  let f=0;
+  return new Promise(res=>{
+    (function step(){
+      const end=Math.min(f+80,total);
+      for(;f<end;f++){
+        const s=f*hop;let r=0;
+        for(let j=0;j<W;j++)r+=x[s+j]*x[s+j];
+        if(Math.sqrt(r/W)<0.01){out[f]=0;continue}
+        for(let t=1;t<=maxT;t++){let a=0;for(let j=0;j<W;j++){const q=x[s+j]-x[s+j+t];a+=q*q}d[t]=a}
+        let run=0;c[0]=1;
+        for(let t=1;t<=maxT;t++){run+=d[t];c[t]=run?d[t]*t/run:1}
+        let m=0;
+        for(let t=minT;t<maxT;t++){
+          if(c[t]<0.15){while(t+1<maxT&&c[t+1]<c[t])t++;m=Math.round(69+12*Math.log2(sr/t/440));break}
+        }
+        out[f]=m>=21&&m<=108?m:0;
+      }
+      onProg(total?f/total:1);
+      if(f<total)setTimeout(step,0);else res({m:out,hop});
+    })();
+  });
+}
+
+async function analyze(file){
+  const st=$('status');
+  st.textContent=t('read');
+  let ab;
+  try{
+    const ac=new (window.AudioContext||window.webkitAudioContext)();
+    ab=await ac.decodeAudioData(await file.arrayBuffer());ac.close();
+  }catch(e){st.textContent=t('err');return}
+  const f=Math.max(1,Math.floor(ab.sampleRate/11025)),sr=ab.sampleRate/f;
+  const n=Math.floor(ab.duration*ab.sampleRate/f);
+  const x=new Float32Array(n),chs=[];
+  for(let k=0;k<ab.numberOfChannels;k++)chs.push(ab.getChannelData(k));
+  for(let i=0;i<n;i++){let s=0;for(const ch of chs)for(let k=0;k<f;k++)s+=ch[i*f+k];x[i]=s/(f*chs.length)}
+  const {m,hop}=await yinFrames(x,sr,p=>st.textContent=t('ana')+' '+Math.round(p*100)+' %');
+  const sm=m.slice();
+  for(let i=2;i<m.length-2;i++){const a=[m[i-2],m[i-1],m[i],m[i+1],m[i+2]].sort((p,q)=>p-q);sm[i]=a[2]}
+  notes=[];
+  for(let i=0;i<sm.length;){
+    if(!sm[i]){i++;continue}
+    let j=i;while(j<sm.length&&sm[j]===sm[i])j++;
+    if(j-i>=4)notes.push({t0:i*hop/sr,t1:j*hop/sr,m:sm[i]});
+    i=j;
+  }
+  if(!notes.length){st.textContent=t('none');return}
+  mkGroups();tip();st.textContent=notes.length+' '+t('done');
+  const L=$('list');L.innerHTML='';
+  notes.slice(0,300).forEach(n=>{const b=document.createElement('button');b.textContent=nm(fit(n.m));b.onclick=()=>{$('au').currentTime=n.t0;$('au').play()};L.appendChild(b)});
+}
+
+function idxAt(t){
+  let a=0,b=notes.length-1,r=-1;
+  while(a<=b){const mid=(a+b)>>1;if(notes[mid].t0<=t){r=mid;a=mid+1}else b=mid-1}
+  return r>=0&&t<=notes[r].t1+0.05?r:-1;
+}
+function mkGroups(){
+  for(let i=0;i<notes.length;){
+    let j=i;
+    while(j+1<notes.length&&fit(notes[j+1].m)===fit(notes[i].m)&&notes[j+1].t0-notes[j].t1<0.8)j++;
+    for(let k=i;k<=j;k++){notes[k].pos=k-i+1;notes[k].cnt=j-i+1}
+    i=j+1;
+  }
+}
+function chips(k){
+  let h='',i=k,c=0;
+  while(i<notes.length&&c<5){
+    const n=notes[i],r=n.cnt-n.pos+1;
+    h+='<span class="grp"><span class="chip">'+nm(fit(n.m))+'</span>'+(r>1?'<span class="rep">('+r+' '+t('times')+')</span>':'')+'</span>';
+    i+=r;c++;
+  }
+  return h;
+}
+let last=null,lastNx=[],lastI=-2;
+function loop(){
+  const au=$('au');
+  if(notes.length){
+    const tm=au.currentTime,i=idxAt(tm);
+    const key=i>=0?keys[fit(notes[i].m)]:null;
+    if(i!==lastI){lastI=i;
+      if(last){last.classList.remove('on');delete last.dataset.p}
+      if(key){void key.offsetWidth;key.classList.add('on');if(notes[i].cnt>1)key.dataset.p=notes[i].pos;const w=$('wrap');w.scrollLeft=key.offsetLeft-w.clientWidth/2}
+      last=key;$('now').innerHTML=i>=0?nm(fit(notes[i].m))+(notes[i].cnt>1?'<small>'+t('same')+' : '+notes[i].pos+' '+t('of')+' '+notes[i].cnt+'</small>':''):'';
+    }
+    let k=i>=0?i+1:notes.findIndex(n=>n.t0>tm);
+    if(k<0)k=notes.length;
+    const nx=notes.slice(k,k+6);
+    const sig=nx.map(n=>n.t0).join();
+    if(sig!==lastNx.sig){
+      lastNx.forEach(m=>keys[m]&&keys[m].classList.remove('nx'));
+      lastNx=nx.map(n=>fit(n.m));lastNx.sig=sig;
+      if(lastNx[0]&&keys[lastNx[0]])keys[lastNx[0]].classList.add('nx');
+      $('next').innerHTML=chips(k);
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+$('file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  $('au').src=URL.createObjectURL(f);
+  notes=[];$('next').innerHTML='';$('now').textContent='';
+  analyze(f);
+});
+
+$('size').addEventListener('change',build);
+const COLS=['#d6336c','#1c7ed6','#2f9e44','#f08c00','#7048e8'];
+function setCol(c){
+  const r=document.documentElement.style;r.setProperty('--hl',c);
+  const n=parseInt(c.slice(1),16),L=(.299*(n>>16)+.587*((n>>8)&255)+.114*(n&255))/255;
+  r.setProperty('--onhl',L>.6?'#000':'#fff');
+  $('col').value=c;
+  document.querySelectorAll('#sw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===c));
+  try{localStorage.setItem('hl',c)}catch(e){}
+}
+COLS.forEach(c=>{const b=document.createElement('button');b.dataset.c=c;b.style.background=c;b.setAttribute('aria-label','Couleur '+c);b.onclick=()=>setCol(c);$('sw').appendChild(b)});
+$('col').addEventListener('input',e=>setCol(e.target.value));
+let sv;try{sv=localStorage.getItem('hl')}catch(e){}
+setCol(sv||COLS[0]);
+try{const s=localStorage.getItem('lang');if(s&&T[s])lang=s;else{const b=(navigator.language||'fr').slice(0,2);if(T[b])lang=b}}catch(e){}
+$('lang').value=lang;
+$('lang').addEventListener('change',e=>{lang=e.target.value;try{localStorage.setItem('lang',lang)}catch(_){}applyLang(true)});
+$('not').addEventListener('change',e=>{nsys=+e.target.value;applyLang(false)});
+$('spd').addEventListener('change',e=>{$('au').defaultPlaybackRate=$('au').playbackRate=+e.target.value});
+let rec=null;
+$('cap').addEventListener('change',e=>{const f=e.target.files[0];if(f)load(f)});
+function setMic(){$('mic').textContent=rec?t('stop'):t('mic')}
+function load(f){$('au').src=URL.createObjectURL(f);notes=[];$('next').innerHTML='';$('now').textContent='';$('tip').textContent='';analyze(f)}
+$('mic').addEventListener('click',async()=>{
+  if(rec){rec.stop();return}
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    const ch=[],r=new MediaRecorder(s);rec=r;
+    r.ondataavailable=e=>ch.push(e.data);
+    r.onstop=()=>{s.getTracks().forEach(x=>x.stop());rec=null;setMic();if(ch.length)load(new File(ch,'rec',{type:ch[0].type||'audio/webm'}))};
+    r.start();setMic();$('status').textContent=t('rec');
+    setTimeout(()=>{if(rec===r)r.stop()},60000);
+  }catch(e){rec=null;setMic();$('capw').hidden=false;$('status').textContent=t('micerr')+' ('+(e&&e.name||'?')+')'}
+});
+applyLang(true);loop();
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+</body>
+</html>
